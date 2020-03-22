@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class fbisParser {
+public class FbisParser {
     public static List<Document> parse(String absPathTofbis) throws IOException {
         List<Document> parsedDocumentList = new ArrayList<>();
 
