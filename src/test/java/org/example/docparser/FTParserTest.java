@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FTParserTest {
     @Test
-    public void shouldParseFR94Documents() throws IOException {
+    public void shouldParseFTDocuments() throws IOException {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
         String pathToFedRegister = String.format("%s/dataset/ft",currentRelativePath);
         List<Document> documentList = new FTParser().parse(pathToFedRegister);
