@@ -1,4 +1,4 @@
-package org.example;
+package ie.tcd.newssearch;
 
 /**
  * Hello world!

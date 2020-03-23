@@ -1,4 +1,4 @@
-package org.example.docparser;
+package ie.tcd.newssearch.docparser;
 
 import org.apache.lucene.document.Document;
 import org.junit.Assert;

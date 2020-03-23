@@ -1,4 +1,4 @@
-package org.example.docparser;
+package ie.tcd.newssearch.docparser;
 
 import org.apache.lucene.document.Document;
 import org.jsoup.Jsoup;
@@ -15,8 +15,8 @@ public class FTParser implements DocParser {
     private List<Document> parsedDocumentList = new ArrayList<>();
 
     @Override
-    public List<Document> parse(String pathToFT) throws IOException {
-        File[] directories = new File(pathToFT).listFiles(File::isDirectory);
+    public List<Document> parse(String absPathToFT) throws IOException {
+        File[] directories = new File(absPathToFT).listFiles(File::isDirectory);
         String docNo,text,header;
 
         assert directories != null;
@@ -25,7 +25,7 @@ public class FTParser implements DocParser {
 
             assert files != null;
             for (File file : files) {
-                org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(file, null, "");
+                org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(file, "UTF-8", "");
                 Elements documents = jsoupDoc.select("DOC");
 
                 for (Element document : documents) {
