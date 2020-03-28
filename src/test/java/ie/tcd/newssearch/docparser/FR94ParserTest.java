@@ -14,7 +14,7 @@ public class FR94ParserTest {
     public void shouldParseFR94Documents() throws IOException {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
         String pathToFedRegister = String.format("%s/dataset/fr94",currentRelativePath);
-        List<Document> documentList = FR94Parser.parse(pathToFedRegister);
+        List<Document> documentList = new FR94Parser().parse(pathToFedRegister);
         Assert.assertEquals(55630, documentList.size());
     }
 }

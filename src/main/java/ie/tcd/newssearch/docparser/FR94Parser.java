@@ -1,8 +1,6 @@
 package ie.tcd.newssearch.docparser;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.TextField;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -12,14 +10,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FR94Parser {
+public class FR94Parser implements DocParser {
 
-    private static List<Document> parsedFedDocumentList = new ArrayList<>();
+    private List<Document> parsedDocumentList = new ArrayList<>();
 
-    public static List<Document> parse(String pathToFR94) throws IOException {
+    @Override
+    public List<Document> parse(String pathToFR94) throws IOException {
 
         File[] directories = new File(pathToFR94).listFiles(File::isDirectory);
-        String docno,text,title;
+        String docno, text, title;
         for (File directory : directories) {
             File[] files = directory.listFiles();
             for (File file : files) {
@@ -42,18 +41,10 @@ public class FR94Parser {
                     docno = document.select("DOCNO").text();
                     text = document.select("TEXT").text();
 
-                    addFedRegisterDoc(docno, text, title);
+                    parsedDocumentList.add(DocParser.createDocument(docno, title, text));
                 }
             }
         }
-        return parsedFedDocumentList;
-    }
-
-    private static void addFedRegisterDoc(String docno, String text, String title) {
-        Document doc = new Document();
-        doc.add(new TextField("docno", docno, Field.Store.YES));
-        doc.add(new TextField("text", text, Field.Store.YES));
-        doc.add(new TextField("headline", title, Field.Store.YES));
-        parsedFedDocumentList.add(doc);
+        return parsedDocumentList;
     }
 }

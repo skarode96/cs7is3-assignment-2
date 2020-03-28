@@ -14,7 +14,7 @@ public class FbisParserTest {
     public void shouldParseFbisDocs() throws IOException {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
         String absPathTofbis = String.format("dataset/fbis",currentRelativePath);
-        List<Document> documentList = FbisParser.parse(absPathTofbis);
+        List<Document> documentList = new FbisParser().parse(absPathTofbis);
         Assert.assertEquals(130474, documentList.size());
     }
 }

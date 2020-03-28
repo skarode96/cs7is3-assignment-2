@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TopicsParserTest {
     @Test
-    public void parse() throws IOException {
+    public void shouldParseTopics() throws IOException {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
         String pathToTopics = String.format("%s/dataset/topics/topics",currentRelativePath);
         List<TopicsModel> topicList = TopicsParser.parse(pathToTopics);

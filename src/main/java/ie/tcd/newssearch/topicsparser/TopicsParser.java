@@ -12,11 +12,11 @@ import java.util.List;
 
 public class TopicsParser {
 
-    private static List<TopicsModel> parsedTopicsList = new ArrayList<>();
     private final static String COLON      = ":";
     private final static String WHITESPACE = " ";
     private final static String LINEFEED   = "\\n";
     private final static String NEWLINE    = "\\n\\n";
+    private static List<TopicsModel> parsedTopicsList = new ArrayList<>();
 
     public static List<TopicsModel> parse(String absPathToTopicsFile) throws IOException {
         String num, title, desc, narr;
@@ -39,7 +39,7 @@ public class TopicsParser {
     }
 
     private static String extractWhenNoClosingTag(String html) {
-        return html.split(NEWLINE,2)[0].split(COLON, 2)[1].replaceAll(LINEFEED, WHITESPACE).trim();
+        return html.split(NEWLINE, 2)[0].split(COLON, 2)[1].replaceAll(LINEFEED, WHITESPACE).trim();
     }
 
 }

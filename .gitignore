@@ -1,3 +1,12 @@
-# Default ignored files
-/.idea
-/target
+# Idea and project ignored files
+.idea/
+target/
+index/
+*.iml
+
+# Package Files
+*.jar
+
+# Compiled class file
+*.class
+
