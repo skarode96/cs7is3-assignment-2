@@ -5,6 +5,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.ConcurrentMergeScheduler;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
@@ -53,6 +54,11 @@ public class IndexerCore {
             final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(azer);
             indexWriterConfig.setOpenMode(OpenMode.CREATE);
             indexWriterConfig.setSimilarity(getSimilarity());
+            indexWriterConfig.setRAMBufferSizeMB(1024);
+            ConcurrentMergeScheduler cms = new ConcurrentMergeScheduler();
+            cms.setMaxMergesAndThreads(4, 2);
+            indexWriterConfig.setMergeScheduler(cms);
+            indexWriterConfig.setMaxBufferedDocs(100000);
             indexWriter = new IndexWriter(dir, indexWriterConfig);
 
             String[] parsers = {"FTParser", "FbisParser", "FR94Parser", "LATimeParser"};
