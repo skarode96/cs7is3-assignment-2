@@ -8,7 +8,7 @@ import org.apache.lucene.document.TextField;
 import java.io.IOException;
 import java.util.List;
 
-interface DocParser {
+public interface DocParser {
 
     /**
      * Method to create Lucene Document.

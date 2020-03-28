@@ -16,7 +16,7 @@ public class FTParser implements DocParser {
 
     @Override
     public List<Document> parse(String absPathToFT) throws IOException {
-        File[] directories = new File(absPathToFT).listFiles(File::isDirectory);
+        File[] directories = new File(absPathToFT + "/ft").listFiles(File::isDirectory);
         String docNo,text,header;
 
         assert directories != null;

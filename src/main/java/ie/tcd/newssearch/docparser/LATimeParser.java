@@ -16,7 +16,7 @@ public class LATimeParser implements DocParser {
 
     @Override
     public List<Document> parse(String absPathToLaTimes) throws IOException {
-        File folder = new File(absPathToLaTimes);
+        File folder = new File(absPathToLaTimes + "/latimes");
         File[] listOfFiles = folder.listFiles();
 
         for (File file : listOfFiles) {

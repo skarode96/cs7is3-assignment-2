@@ -17,7 +17,7 @@ public class FR94Parser implements DocParser {
     @Override
     public List<Document> parse(String pathToFR94) throws IOException {
 
-        File[] directories = new File(pathToFR94).listFiles(File::isDirectory);
+        File[] directories = new File(pathToFR94 + "/fr94").listFiles(File::isDirectory);
         String docno, text, title;
         for (File directory : directories) {
             File[] files = directory.listFiles();

@@ -16,7 +16,7 @@ public class FbisParser implements DocParser {
     @Override
     public List<Document> parse(String absPathTofbis) throws IOException {
 
-        File folder = new File(absPathTofbis);
+        File folder = new File(absPathTofbis + "/fbis");
         File[] listOfFiles = folder.listFiles();
 
         for (File file : listOfFiles) {

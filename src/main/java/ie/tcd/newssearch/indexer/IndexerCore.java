@@ -1,9 +1,6 @@
 package ie.tcd.newssearch.indexer;
 
-import ie.tcd.newssearch.docparser.FR94Parser;
-import ie.tcd.newssearch.docparser.FTParser;
-import ie.tcd.newssearch.docparser.FbisParser;
-import ie.tcd.newssearch.docparser.LATimeParser;
+import ie.tcd.newssearch.docparser.DocParser;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -19,12 +16,20 @@ import org.apache.lucene.store.FSDirectory;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class IndexerCore {
 
     public String indexLocation;
     public String documentsLocation;
+
+    // List of documents in the corpus
+    // public List<Document> documents = Collections.synchronizedList(new ArrayList<Document>());
+
+    private IndexWriter indexWriter;
 
     public IndexerCore(String documentsDirectory, String indexDirectory) {
         this.indexLocation = indexDirectory;
@@ -39,34 +44,41 @@ public class IndexerCore {
     public void CreateIndex() {
 
         System.out.println("Indexing Begin...");
+        long start = System.currentTimeMillis();
         final Analyzer azer = getAnalyzer();
+
         try {
             Directory dir = FSDirectory.open(Paths.get(this.indexLocation));
+
             final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(azer);
             indexWriterConfig.setOpenMode(OpenMode.CREATE);
-
             indexWriterConfig.setSimilarity(getSimilarity());
+            indexWriter = new IndexWriter(dir, indexWriterConfig);
 
-            final IndexWriter indexWriter = new IndexWriter(dir, indexWriterConfig);
+            String[] parsers = {"FTParser", "FbisParser", "FR94Parser", "LATimeParser"};
 
-            // ArrayList of documents in the corpus
-            ArrayList<Document> documents = new ArrayList<Document>();
+            ExecutorService exe = Executors.newFixedThreadPool(4);
+            int tasks = 4;
+            CountDownLatch latch = new CountDownLatch(tasks);
 
-            documents.addAll(new FTParser().parse((new File(documentsLocation + "/ft")).getCanonicalPath()));
-            documents.addAll(new FbisParser().parse((new File(documentsLocation + "/fbis")).getCanonicalPath()));
-            documents.addAll(new FR94Parser().parse((new File(documentsLocation + "/fr94")).getCanonicalPath()));
-            documents.addAll(new LATimeParser().parse((new File(documentsLocation + "/latimes")).getCanonicalPath()));
+            for (int i = 0; i < tasks; i++) {
+                exe.submit(this.new IndexTask(parsers[i], latch));
+            }
+            try {
+                latch.await();
+                System.out.println("Summary:");
+                long end = System.currentTimeMillis();
+                System.out.println("Indexing " + indexWriter.numDocs() + " documents took " + (end - start)/1000L + " seconds");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            exe.shutdown();
 
-            indexWriter.addDocuments(documents);
             indexWriter.close();
             dir.close();
-            System.out.println("Indexed.");
         } catch (Exception ex) {
-            System.out.println(ex.toString());
-            System.out.println(ex.getMessage());
             ex.printStackTrace();
         }
-
     }
 
     public MultiSimilarity getSimilarity() {
@@ -89,5 +101,28 @@ public class IndexerCore {
 //		StandardAnalyzer analyzer = new StandardAnalyzer();
         StandardAnalyzer analyzer = new StandardAnalyzer(EnglishAnalyzer.getDefaultStopSet());
         return analyzer;
+    }
+
+    class IndexTask implements Runnable {
+        private CountDownLatch latch;
+        private String parser;
+
+        public IndexTask(String parser, CountDownLatch latch) {
+            this.parser = parser;
+            this.latch = latch;
+        }
+
+        public void run() {
+            try {
+                DocParser parserInstance = (DocParser) Class.forName("ie.tcd.newssearch.docparser." + parser).getConstructor().newInstance();
+                List<Document> documentList = parserInstance.parse((new File(documentsLocation)).getCanonicalPath());
+                // documents.addAll(documentList);
+                indexWriter.addDocuments(documentList);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            latch.countDown();
+        }
     }
 }
