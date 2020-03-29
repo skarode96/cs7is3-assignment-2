@@ -11,20 +11,9 @@
         </layout>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>app.log</file>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{35} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <logger name="ie.tcd.newssearch.indexer" level="INFO" additivity="false">
-        <appender-ref ref="CONSOLE" />
-    </logger>
-
     <!-- By default, the level of the root level is set to DEBUG -->
     <root level="INFO">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE" />
     </root>
 
 </configuration>

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class FbisParser implements DocParser {
     private List<Document> parsedDocumentList = new ArrayList<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(FbisParser.class);
+    //private static final Logger LOGGER = LoggerFactory.getLogger(FbisParser.class);
 
     @Override
     public List<Document> parse(String absPathTofbis) throws IOException {
@@ -33,7 +33,7 @@ public class FbisParser implements DocParser {
                 docNo = (doc.select("DOCNO").text());
                 header = (doc.select("HEADER").select("F").text());
                 text = (doc.select("TEXT").select("F").text());
-                LOGGER.debug("Parsing Fbis Document number: " + docNo);
+                //LOGGER.debug("Parsing Fbis Document number: " + docNo);
                 parsedDocumentList.add(DocParser.createDocument(docNo, header, text));
             }
 

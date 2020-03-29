@@ -60,11 +60,9 @@ public class IndexerCore {
             final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(azer);
             indexWriterConfig.setOpenMode(OpenMode.CREATE);
             indexWriterConfig.setSimilarity(getSimilarity());
-            indexWriterConfig.setRAMBufferSizeMB(1024);
             ConcurrentMergeScheduler cms = new ConcurrentMergeScheduler();
             cms.setMaxMergesAndThreads(4, 2);
             indexWriterConfig.setMergeScheduler(cms);
-            indexWriterConfig.setMaxBufferedDocs(100000);
             indexWriterConfig.setUseCompoundFile(false);
             indexWriter = new IndexWriter(dir, indexWriterConfig);
 

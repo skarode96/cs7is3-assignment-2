@@ -15,7 +15,7 @@ import java.util.List;
 public class LATimeParser implements DocParser {
 
     private List<Document> parsedDocumentList = new ArrayList<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(LATimeParser.class);
+    //private static final Logger LOGGER = LoggerFactory.getLogger(LATimeParser.class);
 
     @Override
     public List<Document> parse(String absPathToLaTimes) throws IOException {
@@ -32,7 +32,7 @@ public class LATimeParser implements DocParser {
                 docNo = (doc.select("DOCNO").text());
                 headline = (doc.select("HEADLINE").select("P").text());
                 text = (doc.select("TEXT").select("P").text());
-                LOGGER.debug("Parsed LATime Document number: " + docNo);
+                //LOGGER.debug("Parsed LATime Document number: " + docNo);
                 parsedDocumentList.add(DocParser.createDocument(docNo, headline, text));
             }
 

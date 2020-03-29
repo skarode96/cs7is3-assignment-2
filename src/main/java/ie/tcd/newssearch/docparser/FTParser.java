@@ -15,7 +15,7 @@ import java.util.List;
 public class FTParser implements DocParser {
 
     private List<Document> parsedDocumentList = new ArrayList<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(FTParser.class);
+    //private static final Logger LOGGER = LoggerFactory.getLogger(FTParser.class);
 
     @Override
     public List<Document> parse(String absPathToFT) throws IOException {
@@ -35,7 +35,7 @@ public class FTParser implements DocParser {
                     docNo = document.select("DOCNO").text();
                     header = document.select("HEADLINE").text();
                     text = document.select("TEXT").text();
-                    LOGGER.debug("Parsed FT Document number: " + docNo);
+                    //LOGGER.debug("Parsed FT Document number: " + docNo);
                     parsedDocumentList.add(DocParser.createDocument(docNo, header, text));
                 }
             }
