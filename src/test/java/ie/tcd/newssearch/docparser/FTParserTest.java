@@ -13,7 +13,7 @@ public class FTParserTest {
     @Test
     public void shouldParseFTDocuments() throws IOException {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
-        String pathToFt = String.format("%s/dataset/ft",currentRelativePath);
+        String pathToFt = String.format("%s/dataset",currentRelativePath);
         List<Document> documentList = new FTParser().parse(pathToFt);
         Assert.assertEquals(210158, documentList.size());
     }

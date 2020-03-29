@@ -14,7 +14,7 @@ public class LATimesParserTest {
     @Test
     public void shouldParseLATimesDocs() throws IOException {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
-        String absPathToLaTimes = String.format("%s/dataset/latimes",currentRelativePath);
+        String absPathToLaTimes = String.format("%s/dataset",currentRelativePath);
         List<Document> documentList = new LATimeParser().parse(absPathToLaTimes);
         Assert.assertEquals(131899, documentList.size());
     }
