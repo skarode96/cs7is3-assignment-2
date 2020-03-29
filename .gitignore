@@ -10,3 +10,6 @@ index/
 # Compiled class file
 *.class
 
+# LOG file
+*.log
+

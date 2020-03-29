@@ -15,7 +15,11 @@ import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -23,6 +27,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class IndexerCore {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(IndexerCore.class);
 
     public String indexLocation;
     public String documentsLocation;
@@ -44,7 +50,7 @@ public class IndexerCore {
 
     public void CreateIndex() {
 
-        System.out.println("Indexing Begin...");
+        LOGGER.info("Indexing started");
         long start = System.currentTimeMillis();
         final Analyzer azer = getAnalyzer();
 
@@ -59,6 +65,7 @@ public class IndexerCore {
             cms.setMaxMergesAndThreads(4, 2);
             indexWriterConfig.setMergeScheduler(cms);
             indexWriterConfig.setMaxBufferedDocs(100000);
+            indexWriterConfig.setUseCompoundFile(false);
             indexWriter = new IndexWriter(dir, indexWriterConfig);
 
             String[] parsers = {"FTParser", "FbisParser", "FR94Parser", "LATimeParser"};
@@ -72,11 +79,10 @@ public class IndexerCore {
             }
             try {
                 latch.await();
-                System.out.println("Summary:");
                 long end = System.currentTimeMillis();
-                System.out.println("Indexing " + indexWriter.numDocs() + " documents took " + (end - start)/1000L + " seconds");
+                LOGGER.info("Indexing " + indexWriter.numDocs() + " documents took " + (end - start)/1000L + " seconds");
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOGGER.error("Interrupted Indexing thread", e);
             }
             exe.shutdown();
 
@@ -124,11 +130,13 @@ public class IndexerCore {
                 List<Document> documentList = parserInstance.parse((new File(documentsLocation)).getCanonicalPath());
                 // documents.addAll(documentList);
                 indexWriter.addDocuments(documentList);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IOException ioe) {
+                LOGGER.error("Error while parsing or indexing " + parser + " document", ioe);
+            } catch(Exception e) {
+                LOGGER.error("Error in parser class for" + parser, e);
+            } finally {
+                latch.countDown();
             }
-
-            latch.countDown();
         }
     }
 }
