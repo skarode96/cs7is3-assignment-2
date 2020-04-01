@@ -47,19 +47,14 @@ public class Searcher {
 
             for (TopicsModel queryData : loadedQueries) {
 
-                List<String> splitNarrative = splitNarrIntoRelNotRel(queryData.getTopicNarrative());
-                String relevantNarr = splitNarrative.get(0).trim();
-
                 BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder();
 
                 if (queryData.getTopicTitle().length() > 0) {
 
                     Query titleQuery = queryParser.parse(QueryParser.escape(queryData.getTopicTitle()));
                     Query descriptionQuery = queryParser.parse(QueryParser.escape(queryData.getTopicDesc()));
-                    Query narrativeQuery = null;
-                    if(relevantNarr.length()>0) {
-                        narrativeQuery = queryParser.parse(QueryParser.escape(relevantNarr));
-                    }
+                    Query narrativeQuery = queryParser.parse(QueryParser.escape(queryData.getTopicNarrative()));
+
 
                     booleanQuery.add(new BoostQuery(titleQuery, (float) 4), BooleanClause.Occur.SHOULD);
                     booleanQuery.add(new BoostQuery(descriptionQuery, (float) 1.7), BooleanClause.Occur.SHOULD);
@@ -85,31 +80,6 @@ public class Searcher {
             System.out.println("ERROR: an error occurred when instantiating the printWriter!");
             System.out.println(String.format("ERROR MESSAGE: %s", e.getMessage()));
         }
-    }
-
-    private static List<String> splitNarrIntoRelNotRel(String narrative) {
-        StringBuilder relevantNarr = new StringBuilder();
-        StringBuilder irrelevantNarr = new StringBuilder();
-        List<String> splitNarrative = new ArrayList<>();
-
-        BreakIterator bi = BreakIterator.getSentenceInstance();
-        bi.setText(narrative);
-        int index = 0;
-        while (bi.next() != BreakIterator.DONE) {
-            String sentence = narrative.substring(index, bi.current());
-
-            if (!sentence.contains("not relevant") && !sentence.contains("irrelevant")) {
-                relevantNarr.append(sentence.replaceAll(
-                        "a relevant document identifies|a relevant document could|a relevant document may|a relevant document must|a relevant document will|a document will|to be relevant|relevant documents|a document must|relevant|will contain|will discuss|will provide|must cite",
-                        ""));
-            } else {
-                irrelevantNarr.append(sentence.replaceAll("are also not relevant|are not relevant|are irrelevant|is not relevant|not|NOT", ""));
-            }
-            index = bi.current();
-        }
-        splitNarrative.add(relevantNarr.toString());
-        splitNarrative.add(irrelevantNarr.toString());
-        return splitNarrative;
     }
 
      private static Map<String, Float> createBoostMap() {
