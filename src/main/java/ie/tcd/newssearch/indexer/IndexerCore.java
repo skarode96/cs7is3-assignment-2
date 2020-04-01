@@ -30,32 +30,22 @@ public class IndexerCore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexerCore.class);
 
-    public String indexLocation;
-    public String documentsLocation;
+    public static String indexLocation = "index";
+    public static String documentsLocation = "dataset";
 
     // List of documents in the corpus
     // public List<Document> documents = Collections.synchronizedList(new ArrayList<Document>());
 
-    private IndexWriter indexWriter;
+    private static IndexWriter indexWriter;
 
-    public IndexerCore(String documentsDirectory, String indexDirectory) {
-        this.indexLocation = indexDirectory;
-        this.documentsLocation = documentsDirectory;
-    }
-
-    public IndexerCore() {
-        this.indexLocation = "index";
-        this.documentsLocation = "dataset";
-    }
-
-    public void CreateIndex() {
+    public static void CreateIndex() {
 
         LOGGER.info("Indexing started");
         long start = System.currentTimeMillis();
         final Analyzer azer = getAnalyzer();
 
         try {
-            Directory dir = FSDirectory.open(Paths.get(this.indexLocation));
+            Directory dir = FSDirectory.open(Paths.get(indexLocation));
 
             final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(azer);
             indexWriterConfig.setOpenMode(OpenMode.CREATE);
@@ -73,7 +63,7 @@ public class IndexerCore {
             CountDownLatch latch = new CountDownLatch(tasks);
 
             for (int i = 0; i < tasks; i++) {
-                exe.submit(this.new IndexTask(parsers[i], latch));
+                exe.submit(new IndexTask(parsers[i], latch));
             }
             try {
                 latch.await();
@@ -91,7 +81,7 @@ public class IndexerCore {
         }
     }
 
-    public MultiSimilarity getSimilarity() {
+    public static MultiSimilarity getSimilarity() {
 
         Similarity[] similarities = {new ClassicSimilarity()
                 // , new BM25Similarity()
@@ -103,7 +93,7 @@ public class IndexerCore {
         return new MultiSimilarity(similarities);
     }
 
-    public Analyzer getAnalyzer() {
+    public static Analyzer getAnalyzer() {
         // CustomAnalyzer.builder().withTokenizer(StandardTokenizerFactory.class).addTokenFilter(EnglishPossessiveFilterFactory.class,
         // params)
         // .build();
@@ -113,7 +103,7 @@ public class IndexerCore {
         return analyzer;
     }
 
-    class IndexTask implements Runnable {
+    static class IndexTask implements Runnable {
         private CountDownLatch latch;
         private String parser;
 
