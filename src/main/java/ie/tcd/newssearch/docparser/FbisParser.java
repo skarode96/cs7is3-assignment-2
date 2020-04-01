@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FbisParser implements DocParser {
     private List<Document> parsedDocumentList = new ArrayList<>();
@@ -21,8 +23,9 @@ public class FbisParser implements DocParser {
 
         File folder = new File(absPathTofbis + "/fbis");
         File[] listOfFiles = folder.listFiles();
-
-        for (File file : listOfFiles) {
+        List<String> ignoreFileNameList = getIgnoreFileNameList();
+        List<File> filteredFiles = Arrays.stream(listOfFiles).filter(file -> !ignoreFileNameList.contains(file.getName())).collect(Collectors.toList());
+        for (File file : filteredFiles) {
 
             org.jsoup.nodes.Document fbisContent = Jsoup.parse(file, null, "");
 
@@ -39,6 +42,10 @@ public class FbisParser implements DocParser {
 
         }
         return parsedDocumentList;
+    }
+
+    private List<String> getIgnoreFileNameList() {
+        return Arrays.asList("readchg.txt",  "readmefb.txt");
     }
 
 }

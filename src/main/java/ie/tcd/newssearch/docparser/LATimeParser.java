@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LATimeParser implements DocParser {
 
@@ -21,8 +23,9 @@ public class LATimeParser implements DocParser {
     public List<Document> parse(String absPathToLaTimes) throws IOException {
         File folder = new File(absPathToLaTimes + "/latimes");
         File[] listOfFiles = folder.listFiles();
-
-        for (File file : listOfFiles) {
+        List<String> ignoreFileNameList = getIgnoreFileNameList();
+        List<File> filteredFiles = Arrays.stream(listOfFiles).filter(file -> !ignoreFileNameList.contains(file.getName())).collect(Collectors.toList());
+        for (File file : filteredFiles) {
 
             org.jsoup.nodes.Document laTimesContent = Jsoup.parse(file, null, "");
             Elements docs = laTimesContent.select("DOC");
@@ -38,6 +41,10 @@ public class LATimeParser implements DocParser {
 
         }
         return parsedDocumentList;
+    }
+
+    private List<String> getIgnoreFileNameList() {
+        return Arrays.asList("readchg.txt",  "readmela.txt");
     }
 
 }

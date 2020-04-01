@@ -15,6 +15,6 @@ public class FbisParserTest {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
         String absPathTofbis = String.format("dataset",currentRelativePath);
         List<Document> documentList = new FbisParser().parse(absPathTofbis);
-        Assert.assertEquals(130474, documentList.size());
+        Assert.assertEquals(130471, documentList.size());
     }
 }
