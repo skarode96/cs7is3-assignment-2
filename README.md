@@ -29,10 +29,6 @@ GCC 5.4.0
 
 run following scripts from project root
 
-```
-sh evaluate.sh
-```
-
 * Run the following command
 ```
 sh compile.sh
@@ -46,4 +42,6 @@ sh indexer.sh
 sh run_trec_eval.sh
 
 ``` 
+
+You should be able to view the score on terminal
 
