@@ -30,9 +30,6 @@ public class IndexerCore {
     public static String indexLocation = "index";
     public static String documentsLocation = "dataset";
 
-    // List of documents in the corpus
-    // public List<Document> documents = Collections.synchronizedList(new ArrayList<Document>());
-
     private static IndexWriter indexWriter;
 
     public static void CreateIndex() {
@@ -93,9 +90,6 @@ public class IndexerCore {
     }
 
     public static Analyzer getAnalyzer() {
-        // CustomAnalyzer.builder().withTokenizer(StandardTokenizerFactory.class).addTokenFilter(EnglishPossessiveFilterFactory.class,
-        // params)
-        // .build();
 //        EnglishAnalyzer analyzer = new EnglishAnalyzer();
 //		StandardAnalyzer analyzer = new StandardAnalyzer();
 //        StandardAnalyzer analyzer = new StandardAnalyzer(EnglishAnalyzer.getDefaultStopSet());
