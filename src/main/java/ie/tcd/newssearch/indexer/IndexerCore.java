@@ -9,9 +9,7 @@ import org.apache.lucene.index.ConcurrentMergeScheduler;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.search.similarities.ClassicSimilarity;
-import org.apache.lucene.search.similarities.MultiSimilarity;
-import org.apache.lucene.search.similarities.Similarity;
+import org.apache.lucene.search.similarities.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -83,12 +81,14 @@ public class IndexerCore {
 
     public static MultiSimilarity getSimilarity() {
 
-        Similarity[] similarities = {new ClassicSimilarity()
-                // , new BM25Similarity()
-                // , new AxiomaticF1LOG()
-                // , new BooleanSimilarity(),
+        Similarity[] similarities = {
+//                new ClassicSimilarity(),
+                  new BM25Similarity(),
+//                 , new AxiomaticF1LOG()
+//                 ,
+//                new BooleanSimilarity(),
                 // , new LMJelinekMercerSimilarity(0.2f)
-                // , new LMDirichletSimilarity()
+//                  new LMDirichletSimilarity()
         };
         return new MultiSimilarity(similarities);
     }
@@ -99,7 +99,10 @@ public class IndexerCore {
         // .build();
 //        EnglishAnalyzer analyzer = new EnglishAnalyzer();
 //		StandardAnalyzer analyzer = new StandardAnalyzer();
-        StandardAnalyzer analyzer = new StandardAnalyzer(EnglishAnalyzer.getDefaultStopSet());
+//        StandardAnalyzer analyzer = new StandardAnalyzer(EnglishAnalyzer.getDefaultStopSet());
+//        NewsAnalyzer analyzer = new NewsAnalyzer();
+//        CustomAnalyzerSk analyzer = new CustomAnalyzerSk();
+        CustomAnalyzer analyzer = new CustomAnalyzer();
         return analyzer;
     }
 

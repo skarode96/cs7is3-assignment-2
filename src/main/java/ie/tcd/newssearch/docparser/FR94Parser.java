@@ -15,7 +15,7 @@ import java.util.List;
 public class FR94Parser implements DocParser {
 
     private List<Document> parsedDocumentList = new ArrayList<>();
-    //private static final Logger LOGGER = LoggerFactory.getLogger(FR94Parser.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FR94Parser.class);
 
     @Override
     public List<Document> parse(String pathToFR94) throws IOException {
@@ -43,11 +43,12 @@ public class FR94Parser implements DocParser {
                     document.select("RINDOCK").remove();
                     docno = document.select("DOCNO").text();
                     text = document.select("TEXT").text();
-                    //LOGGER.debug("Parsed FR94 Document number: " + docno);
+//                    LOGGER.debug("Parsed FR94 Document number: " + docno);
                     parsedDocumentList.add(DocParser.createDocument(docno, title, text));
                 }
             }
         }
+        LOGGER.info("Parsing FR94 Documents Done");
         return parsedDocumentList;
     }
 }

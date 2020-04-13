@@ -6,6 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.rmi.runtime.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class FbisParser implements DocParser {
     private List<Document> parsedDocumentList = new ArrayList<>();
-    //private static final Logger LOGGER = LoggerFactory.getLogger(FbisParser.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FbisParser.class);
 
     @Override
     public List<Document> parse(String absPathTofbis) throws IOException {
@@ -36,11 +37,12 @@ public class FbisParser implements DocParser {
                 docNo = (doc.select("DOCNO").text());
                 header = (doc.select("HEADER").select("F").text());
                 text = (doc.select("TEXT").select("F").text());
-                //LOGGER.debug("Parsing Fbis Document number: " + docNo);
+//                LOGGER.info("Parsing Fbis Document number: " + docNo);
                 parsedDocumentList.add(DocParser.createDocument(docNo, header, text));
             }
 
         }
+        LOGGER.info("Parsing Fbis Documents Done");
         return parsedDocumentList;
     }
 
