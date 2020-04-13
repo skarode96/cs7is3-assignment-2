@@ -1,4 +1,4 @@
-package ie.tcd.newssearch.docparser;
+package ie.tcd.newssearch.docloader;
 
 import org.apache.lucene.document.Document;
 import org.junit.Assert;
@@ -9,12 +9,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class FbisParserTest {
+public class FBISLoaderTest {
+
     @Test
-    public void shouldParseFbisDocs() throws IOException {
+    public void shouldLoadDocuments() throws IOException {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
-        String absPathTofbis = String.format("dataset",currentRelativePath);
-        List<Document> documentList = new FbisParser().parse(absPathTofbis);
+        String pathToFBIDocs = String.format("%s/dataset",currentRelativePath);
+        List<Document> documentList = new FBISLoader().load(pathToFBIDocs);
         Assert.assertEquals(130471, documentList.size());
     }
+
 }

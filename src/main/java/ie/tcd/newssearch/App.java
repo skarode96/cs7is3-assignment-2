@@ -15,4 +15,5 @@ public class App {
         Directory dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
         Searcher.executeQueries(dir);
     }
+
 }
