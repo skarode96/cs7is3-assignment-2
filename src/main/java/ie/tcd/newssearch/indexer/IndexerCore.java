@@ -1,18 +1,17 @@
 package ie.tcd.newssearch.indexer;
 
-import ie.tcd.newssearch.docparser.DocParser;
+import ie.tcd.newssearch.docloader.DocLoader;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.en.EnglishAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.ConcurrentMergeScheduler;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.search.similarities.*;
+import org.apache.lucene.search.similarities.BM25Similarity;
+import org.apache.lucene.search.similarities.MultiSimilarity;
+import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,14 +53,14 @@ public class IndexerCore {
             indexWriterConfig.setUseCompoundFile(false);
             indexWriter = new IndexWriter(dir, indexWriterConfig);
 
-            String[] parsers = {"FTParser", "FbisParser", "FR94Parser", "LATimeParser"};
+            String[] loaders = {"FBISLoader", "FR94Loader", "FTLoader", "LATimesLoader"};
 
             ExecutorService exe = Executors.newFixedThreadPool(4);
             int tasks = 4;
             CountDownLatch latch = new CountDownLatch(tasks);
 
             for (int i = 0; i < tasks; i++) {
-                exe.submit(new IndexTask(parsers[i], latch));
+                exe.submit(new IndexTask(loaders[i], latch));
             }
             try {
                 latch.await();
@@ -108,23 +107,24 @@ public class IndexerCore {
 
     static class IndexTask implements Runnable {
         private CountDownLatch latch;
-        private String parser;
+        private String docLoaderClassName;
 
-        public IndexTask(String parser, CountDownLatch latch) {
-            this.parser = parser;
+        public IndexTask(String loader, CountDownLatch latch) {
+            this.docLoaderClassName = loader;
             this.latch = latch;
         }
 
         public void run() {
             try {
-                DocParser parserInstance = (DocParser) Class.forName("ie.tcd.newssearch.docparser." + parser).getConstructor().newInstance();
-                List<Document> documentList = parserInstance.parse((new File(documentsLocation)).getCanonicalPath());
+                DocLoader loaderInstance = (DocLoader) Class.forName("ie.tcd.newssearch.docloader." + docLoaderClassName).getConstructor().newInstance();
+                List<Document> documentList = loaderInstance.load((new File(documentsLocation)).getCanonicalPath());
                 // documents.addAll(documentList);
                 indexWriter.addDocuments(documentList);
+                LOGGER.info(docLoaderClassName + "Indexing Done");
             } catch (IOException ioe) {
-                LOGGER.error("Error while parsing or indexing " + parser + " document", ioe);
+                LOGGER.error("Error while parsing or indexing " + docLoaderClassName + " document", ioe);
             } catch(Exception e) {
-                LOGGER.error("Error in parser class for" + parser, e);
+                LOGGER.error("Error in parser class for" + docLoaderClassName, e);
             } finally {
                 latch.countDown();
             }

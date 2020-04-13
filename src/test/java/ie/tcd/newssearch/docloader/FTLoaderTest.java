@@ -1,4 +1,4 @@
-package ie.tcd.newssearch.docparser;
+package ie.tcd.newssearch.docloader;
 
 import org.apache.lucene.document.Document;
 import org.junit.Assert;
@@ -9,12 +9,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class FTParserTest {
+public class FTLoaderTest {
+
     @Test
-    public void shouldParseFTDocuments() throws IOException {
+    public void shouldLoadDocuments() throws IOException {
         Path currentRelativePath = Paths.get("").toAbsolutePath();
-        String pathToFt = String.format("%s/dataset",currentRelativePath);
-        List<Document> documentList = new FTParser().parse(pathToFt);
+        String pathToFTDocs = String.format("%s/dataset",currentRelativePath);
+        List<Document> documentList = new FTLoader().load(pathToFTDocs);
         Assert.assertEquals(210158, documentList.size());
     }
 }

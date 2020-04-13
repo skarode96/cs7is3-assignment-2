@@ -1,20 +1,16 @@
 package ie.tcd.newssearch;
 
-import static org.junit.Assert.assertTrue;
-
+import ie.tcd.newssearch.indexer.IndexerCore;
+import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- * Unit test for simple App.
- */
 public class AppTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
     @Test
-    public void shouldAnswerWithTrue()
+    @Ignore
+    public void shouldIndex()
     {
-        assertTrue( true );
+        IndexerCore.CreateIndex();
     }
+
 }
