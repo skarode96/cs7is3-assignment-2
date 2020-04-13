@@ -30,19 +30,15 @@ public class CustomAnalyzer2 extends StopwordAnalyzerBase {
     private final Path currentRelativePath = Paths.get("").toAbsolutePath();
 
     CustomAnalyzer2(){
-        super(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
+        super(StandardAnalyzer.ENGLISH_STOP_WORDS_SET);
     }
 
     @Override
     protected TokenStreamComponents createComponents(String s) {
-        final Tokenizer tokenizer = new ClassicTokenizer();
-        TokenStream tokenStream = new LowerCaseFilter(tokenizer);
+        final Tokenizer tokenizer = new StandardTokenizer();
+        TokenStream tokenStream = new StandardFilter(tokenizer);
         tokenStream = new LowerCaseFilter(tokenStream);
         tokenStream = new TrimFilter(tokenStream);
-        tokenStream = new EnglishPossessiveFilter(tokenStream);
-        tokenStream = new PorterStemFilter(tokenStream);
-        tokenStream = new EnglishMinimalStemFilter(tokenStream);
-        tokenStream = new KStemFilter(tokenStream);
         tokenStream = new FlattenGraphFilter(new WordDelimiterGraphFilter(tokenStream, WordDelimiterGraphFilter.SPLIT_ON_NUMERICS |
                 WordDelimiterGraphFilter.GENERATE_WORD_PARTS | WordDelimiterGraphFilter.GENERATE_NUMBER_PARTS |
                 WordDelimiterGraphFilter.PRESERVE_ORIGINAL , null));
@@ -77,7 +73,7 @@ public class CustomAnalyzer2 extends StopwordAnalyzerBase {
     {
         ArrayList<String> stopWordList = new ArrayList<>();
         try {
-            BufferedReader stopwords = new BufferedReader(new FileReader(currentRelativePath + "/DataSet/stopwords.txt"));
+            BufferedReader stopwords = new BufferedReader(new FileReader(currentRelativePath + "/dataset/stopwords.txt"));
             String word = stopwords.readLine();
             while(word != null) {
                 stopWordList.add(word);
