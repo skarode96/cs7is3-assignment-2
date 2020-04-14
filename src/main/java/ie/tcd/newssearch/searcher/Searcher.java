@@ -93,8 +93,8 @@ public class Searcher {
 
      private static Map<String, Float> createBoostMap() {
         Map<String, Float> boost = new HashMap<>();
-        boost.put("headline", (float) 0.1);
-        boost.put("text", (float) 0.9);
+        boost.put("headline", 0.08f);
+        boost.put("text", 0.92f);
         return boost;
     }
 

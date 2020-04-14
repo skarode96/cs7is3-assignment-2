@@ -5,6 +5,12 @@
 
 ######Following is an implementation of the Apache Lucene Library (v7.5.0), written in Java.
 
+The Dataset contains files from:
+
+* The Financial Times Limited (1991, 1992, 1993, 1994)
+* The Federal Register (1994)
+* The Foreign Broadcast Information Service (1996)
+* The Los Angeles Times (1989, 1990).
 
 ###Getting Started
 
