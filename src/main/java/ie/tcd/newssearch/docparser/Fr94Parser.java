@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-// Credit: https://github.com/CS7IS3-A-Y-201718-IR2/text-search-engine-ir2
 
 public class Fr94Parser {
 	public static void main(String[] args) throws IOException {

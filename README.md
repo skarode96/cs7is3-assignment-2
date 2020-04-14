@@ -45,3 +45,7 @@ sh run_trec_eval.sh
 
 You should be able to view the score on terminal
 
+####References
+Document Parsing Implementation: https://github.com/CS7IS3-A-Y-201718-IR2/text-search-engine-ir2
+
+
