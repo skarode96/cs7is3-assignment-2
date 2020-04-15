@@ -31,7 +31,7 @@ public class IndexerCore {
     public static Analyzer analyzer;
     public static Similarity similarity;
 
-    private static IndexWriter indexWriter;
+
 
     public static void CreateIndex(AnalyzerChoice analyzerChoice, SimilarityChoice similarityChoice) {
 
@@ -52,7 +52,7 @@ public class IndexerCore {
             cms.setMaxMergesAndThreads(4, 2);
             indexWriterConfig.setMergeScheduler(cms);
             indexWriterConfig.setUseCompoundFile(false);
-            indexWriter = new IndexWriter(dir, indexWriterConfig);
+            IndexWriter indexWriter = new IndexWriter(dir, indexWriterConfig);
 
             String[] loaders = {"FBISLoader", "FR94Loader", "FTLoader", "LATimesLoader"};
 
