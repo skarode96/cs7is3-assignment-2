@@ -1,6 +1,6 @@
 package ie.tcd.newssearch.searcher;
 
-import ie.tcd.newssearch.indexer.IndexerCore;
+import ie.tcd.newssearch.indexer.*;
 import ie.tcd.newssearch.topicsparser.TopicsModel;
 import ie.tcd.newssearch.topicsparser.TopicsParser;
 import org.apache.lucene.analysis.Analyzer;
@@ -30,17 +30,21 @@ public class Searcher {
     private static final String ITER_NUM = " 0 ";
 
     private final static Path currentRelativePath = Paths.get("").toAbsolutePath();
-    private final static String absPathToSearchResults = String.format("%s/output/query_results", currentRelativePath);
+    private final static String absPathToSearchResults = String.format("%s/output/", currentRelativePath);
 
-    public static void executeQueries(Directory directory) throws ParseException {
+    public static void executeQueries(Directory directory, AnalyzerChoice analyzerChoice, SimilarityChoice similarityChoice) throws ParseException {
         try {
             IndexReader indexReader = DirectoryReader.open(directory);
-            IndexSearcher indexSearcher = createIndexSearcher(indexReader, IndexerCore.getSimilarity());
+            Similarity similarity = SimilarityBuilder.build(similarityChoice);
+            Analyzer analyzer = AnalyzerBuilder.build(analyzerChoice);
+
+            IndexSearcher indexSearcher = createIndexSearcher(indexReader, similarity);
+
 
             Map<String, Float> boost = createBoostMap();
-            QueryParser queryParser = new MultiFieldQueryParser(new String[]{"headline", "text"}, IndexerCore.getAnalyzer(), boost);
+            QueryParser queryParser = new MultiFieldQueryParser(new String[]{"headline", "text"}, analyzer, boost);
 
-            PrintWriter writer = new PrintWriter(absPathToSearchResults, "UTF-8");
+            PrintWriter writer = new PrintWriter(absPathToSearchResults + analyzerChoice + "-" + similarityChoice, "UTF-8");
 
             String pathToTopics = String.format("%s/dataset/topics/topics",currentRelativePath);
             List<TopicsModel> loadedQueries = TopicsParser.parse(pathToTopics);
@@ -98,9 +102,9 @@ public class Searcher {
         return boost;
     }
 
-     private static IndexSearcher createIndexSearcher(IndexReader indexReader, Similarity similarityModel){
+     private static IndexSearcher createIndexSearcher(IndexReader indexReader, Similarity similarity){
         IndexSearcher indexSearcher = new IndexSearcher(indexReader);
-        indexSearcher.setSimilarity(similarityModel);
+        indexSearcher.setSimilarity(similarity);
         return indexSearcher;
     }
 

@@ -129,6 +129,7 @@ public class FBISLoader implements DocLoader {
 		}
 	}
 
+
 	@Override
 	public List<Document> load(String absPathToFiles) throws IOException {
 		return loadFBISDocs(absPathToFiles + "/fbis");
