@@ -1,8 +1,8 @@
 package ie.tcd.newssearch.searcher;
 
-import ie.tcd.newssearch.indexer.AnalyzerChoice;
+import ie.tcd.newssearch.builder.AnalyzerChoice;
 import ie.tcd.newssearch.indexer.IndexerCore;
-import ie.tcd.newssearch.indexer.SimilarityChoice;
+import ie.tcd.newssearch.builder.SimilarityChoice;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;

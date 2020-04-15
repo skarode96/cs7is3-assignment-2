@@ -1,6 +1,5 @@
-package ie.tcd.newssearch.indexer;
+package ie.tcd.newssearch.builder;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.search.similarities.*;
 import org.apache.lucene.search.similarities.Similarity;
 

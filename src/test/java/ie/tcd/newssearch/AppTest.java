@@ -1,8 +1,8 @@
 package ie.tcd.newssearch;
 
-import ie.tcd.newssearch.indexer.AnalyzerChoice;
+import ie.tcd.newssearch.builder.AnalyzerChoice;
 import ie.tcd.newssearch.indexer.IndexerCore;
-import ie.tcd.newssearch.indexer.SimilarityChoice;
+import ie.tcd.newssearch.builder.SimilarityChoice;
 import org.junit.Ignore;
 import org.junit.Test;
 

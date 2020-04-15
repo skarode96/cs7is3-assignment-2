@@ -1,5 +1,6 @@
-package ie.tcd.newssearch.indexer;
+package ie.tcd.newssearch.builder;
 
+import ie.tcd.newssearch.indexer.CustomAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;

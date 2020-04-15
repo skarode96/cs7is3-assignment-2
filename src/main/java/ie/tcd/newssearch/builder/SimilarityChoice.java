@@ -1,4 +1,4 @@
-package ie.tcd.newssearch.indexer;
+package ie.tcd.newssearch.builder;
 
 public enum SimilarityChoice {
 
@@ -10,7 +10,7 @@ public enum SimilarityChoice {
     LMDirichlet("LMDirichlet");
 
     private String similarity;
-    private SimilarityChoice(String choice) {
+    SimilarityChoice(String choice) {
         this.similarity = choice;
     }
 

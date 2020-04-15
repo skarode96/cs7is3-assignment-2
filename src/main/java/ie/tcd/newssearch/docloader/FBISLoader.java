@@ -1,5 +1,3 @@
-//Reference:- https://github.com/kerinb/IR_proj2_group14/tree/master/src/com/kerinb/IR_proj2_group14
-
 package ie.tcd.newssearch.docloader;
 
 import ie.tcd.newssearch.docparser.objects.FBISObject;

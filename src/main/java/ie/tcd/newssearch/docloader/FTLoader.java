@@ -1,5 +1,3 @@
-//Reference:- https://github.com/kerinb/IR_proj2_group14/tree/master/src/com/kerinb/IR_proj2_group14
-
 package ie.tcd.newssearch.docloader;
 
 import ie.tcd.newssearch.docparser.objects.FTObject;
@@ -50,7 +48,6 @@ public class FTLoader implements DocLoader {
 
 		for (Element doc : list) {
 
-			// get data from tags and start creating objects
 			FTObject ftObject = new FTObject();
 			if (doc.getElementsByTag(FTTags.DOCNO.getTag()) != null)
 				ftObject.setDocNo(trimData(doc, FTTags.DOCNO));

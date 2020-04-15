@@ -1,5 +1,9 @@
 package ie.tcd.newssearch.indexer;
 
+import ie.tcd.newssearch.builder.AnalyzerBuilder;
+import ie.tcd.newssearch.builder.AnalyzerChoice;
+import ie.tcd.newssearch.builder.SimilarityBuilder;
+import ie.tcd.newssearch.builder.SimilarityChoice;
 import ie.tcd.newssearch.docloader.DocLoader;
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.analysis.Analyzer;

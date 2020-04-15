@@ -1,4 +1,4 @@
-package ie.tcd.newssearch.indexer;
+package ie.tcd.newssearch.builder;
 
 public enum AnalyzerChoice {
 

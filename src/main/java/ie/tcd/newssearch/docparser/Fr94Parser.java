@@ -38,7 +38,6 @@ public class Fr94Parser {
 				File input = new File(f);
 				Document doc = Jsoup.parse(input, "UTF-8", "");
 
-				// Remove elements from the doc
 				doc.select("docid").remove();
 
 				Elements docs = doc.select("doc");
@@ -54,7 +53,6 @@ public class Fr94Parser {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				// System.out.println("Documents parsed: " + i);
 			}
 		}
 

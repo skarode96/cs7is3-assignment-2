@@ -1,8 +1,8 @@
 package ie.tcd.newssearch;
 
-import ie.tcd.newssearch.indexer.AnalyzerChoice;
+import ie.tcd.newssearch.builder.AnalyzerChoice;
 import ie.tcd.newssearch.indexer.IndexerCore;
-import ie.tcd.newssearch.indexer.SimilarityChoice;
+import ie.tcd.newssearch.builder.SimilarityChoice;
 import ie.tcd.newssearch.searcher.Searcher;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.store.Directory;
@@ -14,118 +14,67 @@ import java.nio.file.Paths;
 public class App {
     public static void main(String[] args) throws IOException, ParseException {
 
-        //BM25 with all Analyzers
+        AnalyzerChoice analyzerChoice;
+        SimilarityChoice similarityChoice;
+
+        System.out.flush();
+        System.out.println(" ");
+        System.out.print("===CS7IS3 Group Assignment-2===");
+        System.out.println("Choose Analyzer");
+        System.out.println("1 - Custom");
+        System.out.println("2 - Standard");
+        System.out.println("3 - English");
+        System.out.println("4 - Simple");
+
+        String input = System.console().readLine();
+
+        switch (input) {
+            case "1":
+                analyzerChoice = AnalyzerChoice.Custom;
+                break;
+            case "2":
+                analyzerChoice = AnalyzerChoice.Standard;
+                break;
+            case "3":
+                analyzerChoice = AnalyzerChoice.English;
+                break;
+            case "4":
+                analyzerChoice = AnalyzerChoice.Simple;
+                break;
+            default:
+                analyzerChoice = AnalyzerChoice.Standard;
+                break;
+        }
+
+        System.out.println("Choose Similarity");
+        System.out.println("1 - BM25Similarity");
+        System.out.println("2 - MultiSimilarity");
+        System.out.println("3 - LMDirichlet");
+        System.out.println("4 - Boolean");
+
+        input = System.console().readLine();
+
+        switch (input) {
+            case "1":
+                similarityChoice = SimilarityChoice.BM25;
+                break;
+            case "2":
+                similarityChoice = SimilarityChoice.Multi;
+                break;
+            case "3":
+                similarityChoice = SimilarityChoice.LMDirichlet;
+                break;
+            case "4":
+                similarityChoice = SimilarityChoice.Boolean;
+                break;
+            default:
+                similarityChoice = SimilarityChoice.Classic;
+                break;
+        }
         IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Custom, SimilarityChoice.BM25);
+        IndexerCore.CreateIndex(analyzerChoice, similarityChoice);
         Directory dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Custom, SimilarityChoice.BM25);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Simple, SimilarityChoice.BM25);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Simple, SimilarityChoice.BM25);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.English, SimilarityChoice.BM25);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.English, SimilarityChoice.BM25);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Standard, SimilarityChoice.BM25);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Standard, SimilarityChoice.BM25);
-
-
-
-
-        //Boolean with all Analyzers
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Custom, SimilarityChoice.Boolean);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Custom, SimilarityChoice.Boolean);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Simple, SimilarityChoice.Boolean);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Simple, SimilarityChoice.Boolean);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.English, SimilarityChoice.Boolean);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.English, SimilarityChoice.Boolean);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Standard, SimilarityChoice.Boolean);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Standard, SimilarityChoice.Boolean);
-
-
-
-        //Multi with all Analyzers
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Custom, SimilarityChoice.Multi);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Custom,SimilarityChoice.Multi);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Simple, SimilarityChoice.Multi);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Simple, SimilarityChoice.Multi);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.English, SimilarityChoice.Multi);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.English, SimilarityChoice.Multi);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Standard, SimilarityChoice.Multi);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Standard, SimilarityChoice.Multi);
-
-
-
-        //Classic with all Analyzers
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Custom, SimilarityChoice.Classic);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Custom, SimilarityChoice.Classic);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Simple, SimilarityChoice.Classic);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Simple, SimilarityChoice.Classic);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.English, SimilarityChoice.Classic);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.English, SimilarityChoice.Classic);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Standard, SimilarityChoice.Classic);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Standard, SimilarityChoice.Classic);
-
-
-        //Dirichlet with all Analyzers
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Custom, SimilarityChoice.LMDirichlet);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Custom, SimilarityChoice.LMDirichlet);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Simple, SimilarityChoice.LMDirichlet);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Simple, SimilarityChoice.LMDirichlet);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.English, SimilarityChoice.LMDirichlet);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.English, SimilarityChoice.LMDirichlet);
-
-        IndexerCore.indexLocation = "Index/";
-        IndexerCore.CreateIndex(AnalyzerChoice.Standard, SimilarityChoice.LMDirichlet);
-        dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir, AnalyzerChoice.Standard, SimilarityChoice.LMDirichlet);
+        Searcher.executeQueries(dir, analyzerChoice, similarityChoice);
 
     }
 }
