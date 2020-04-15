@@ -61,7 +61,7 @@ public class IndexerCore {
             CountDownLatch latch = new CountDownLatch(tasks);
 
             for (int i = 0; i < tasks; i++) {
-                exe.submit(new IndexTask(loaders[i], latch));
+                exe.submit(new IndexTask(loaders[i], latch, indexWriter));
             }
             try {
                 latch.await();
@@ -83,10 +83,12 @@ public class IndexerCore {
     static class IndexTask implements Runnable {
         private CountDownLatch latch;
         private String docLoaderClassName;
+        private IndexWriter indexWriter;
 
-        public IndexTask(String loader, CountDownLatch latch) {
+        public IndexTask(String loader, CountDownLatch latch, IndexWriter indexWriter) {
             this.docLoaderClassName = loader;
             this.latch = latch;
+            this.indexWriter = indexWriter;
         }
 
         public void run() {
@@ -94,7 +96,7 @@ public class IndexerCore {
                 DocLoader loaderInstance = (DocLoader) Class.forName("ie.tcd.newssearch.docloader." + docLoaderClassName).getConstructor().newInstance();
                 List<Document> documentList = loaderInstance.load((new File(documentsLocation)).getCanonicalPath());
                 // documents.addAll(documentList);
-                indexWriter.addDocuments(documentList);
+                this.indexWriter.addDocuments(documentList);
                 LOGGER.info(docLoaderClassName + "Indexing Done");
             } catch (IOException ioe) {
                 LOGGER.error("Error while parsing or indexing " + docLoaderClassName + " document", ioe);
