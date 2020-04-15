@@ -19,7 +19,7 @@ public class App {
 
         System.out.flush();
         System.out.println(" ");
-        System.out.print("===CS7IS3 Group Assignment-2===");
+        System.out.print("===CS7IS3 Group Assignment-2 Group-7===");
         System.out.println("Choose Analyzer");
         System.out.println("1 - Custom");
         System.out.println("2 - Standard");
