@@ -24,10 +24,11 @@ import java.util.List;
 public class FTLoader implements DocLoader {
 
 	private static BufferedReader br;
-	private static ArrayList<Document> ftDocList = new ArrayList<>();
+	private static ArrayList<Document> ftDocList;
 
 	public ArrayList<Document> loadFTDocs(String ftDirectory) throws IOException {
 		System.out.println("Loading FT ...");
+		ftDocList = new ArrayList<>();
 		Directory dir = FSDirectory.open(Paths.get(ftDirectory));
 		for (String directory : dir.listAll()) {
 			Directory insideDir = FSDirectory.open(Paths.get(ftDirectory+"/"+directory));

@@ -24,10 +24,10 @@ import java.util.List;
 public class FBISLoader implements DocLoader {
 
 	private static BufferedReader br;
-	private static ArrayList<Document> fbisDocList = new ArrayList<>();
+	private static ArrayList<Document> fbisDocList;
 
 	public ArrayList<Document> loadFBISDocs(String fbisDirectory) throws IOException {
-
+		fbisDocList = new ArrayList<>();
 		System.out.println("Loading FBIS ...");
 
 		Directory dir = FSDirectory.open(Paths.get(fbisDirectory));

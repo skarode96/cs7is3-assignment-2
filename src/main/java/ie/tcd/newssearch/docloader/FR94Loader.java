@@ -16,9 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FR94Loader implements DocLoader {
-	private static ArrayList<Document> fedRegisterDocList = new ArrayList<>();
+	private static ArrayList<Document> fedRegisterDocList;
 
     public ArrayList<Document> loadFR94Docs(String pathToFedRegister) throws IOException {
+        fedRegisterDocList = new ArrayList<>();
         System.out.println("Loading FR94 ...");
         File[] directories = new File(pathToFedRegister).listFiles(File::isDirectory);
         String docno,text,title;
