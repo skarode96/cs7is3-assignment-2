@@ -61,7 +61,7 @@ public class IndexerCore {
             CountDownLatch latch = new CountDownLatch(tasks);
 
             for (int i = 0; i < tasks; i++) {
-                exe.submit(new IndexTask(loaders[i], latch, indexWriter));
+                exe.submit(new IndexTask(loaders[i], latch));
             }
             try {
                 latch.await();
@@ -83,12 +83,10 @@ public class IndexerCore {
     static class IndexTask implements Runnable {
         private CountDownLatch latch;
         private String docLoaderClassName;
-        private IndexWriter indexWriter;
 
-        public IndexTask(String loader, CountDownLatch latch, IndexWriter indexWriter) {
+        public IndexTask(String loader, CountDownLatch latch) {
             this.docLoaderClassName = loader;
             this.latch = latch;
-            this.indexWriter = indexWriter;
         }
 
         public void run() {
