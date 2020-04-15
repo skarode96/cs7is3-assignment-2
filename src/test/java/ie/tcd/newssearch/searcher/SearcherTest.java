@@ -1,6 +1,8 @@
 package ie.tcd.newssearch.searcher;
 
+import ie.tcd.newssearch.builder.AnalyzerChoice;
 import ie.tcd.newssearch.indexer.IndexerCore;
+import ie.tcd.newssearch.builder.SimilarityChoice;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -13,7 +15,9 @@ public class SearcherTest {
 
     @Test
     public void shouldRunQueries() throws IOException, ParseException {
-        Directory dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation));
-        Searcher.executeQueries(dir);
+        AnalyzerChoice analyzerChoice = AnalyzerChoice.Custom;
+        SimilarityChoice similarityChoice = SimilarityChoice.BM25;
+        Directory dir = FSDirectory.open(Paths.get(IndexerCore.indexLocation + analyzerChoice + "-" + similarityChoice));
+        Searcher.executeQueries(dir, analyzerChoice, similarityChoice);
     }
 }

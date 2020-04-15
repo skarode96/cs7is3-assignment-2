@@ -1,14 +1,17 @@
 package ie.tcd.newssearch.indexer;
 
+import ie.tcd.newssearch.builder.AnalyzerBuilder;
+import ie.tcd.newssearch.builder.AnalyzerChoice;
+import ie.tcd.newssearch.builder.SimilarityBuilder;
+import ie.tcd.newssearch.builder.SimilarityChoice;
 import ie.tcd.newssearch.docloader.DocLoader;
+import org.apache.commons.io.FileUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.ConcurrentMergeScheduler;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.search.similarities.BM25Similarity;
-import org.apache.lucene.search.similarities.MultiSimilarity;
 import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -27,28 +30,33 @@ public class IndexerCore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexerCore.class);
 
-    public static String indexLocation = "index";
+    public static String indexLocation = "Index/";
     public static String documentsLocation = "dataset";
+    public static Analyzer analyzer;
+    public static Similarity similarity;
 
-    private static IndexWriter indexWriter;
 
-    public static void CreateIndex() {
 
-        LOGGER.info("Indexing started");
+    public static void CreateIndex(AnalyzerChoice analyzerChoice, SimilarityChoice similarityChoice) {
+
+        LOGGER.info("Indexing started for==> " + analyzerChoice + "-" + similarityChoice);
         long start = System.currentTimeMillis();
-        final Analyzer azer = getAnalyzer();
+        analyzer = AnalyzerBuilder.build(analyzerChoice);
+        similarity = SimilarityBuilder.build(similarityChoice);
 
         try {
+            indexLocation = indexLocation + analyzerChoice + "-" + similarityChoice;
+            if(new File(indexLocation).exists())
+                FileUtils.deleteDirectory(new File(indexLocation));
             Directory dir = FSDirectory.open(Paths.get(indexLocation));
-
-            final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(azer);
+            final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
             indexWriterConfig.setOpenMode(OpenMode.CREATE);
-            indexWriterConfig.setSimilarity(getSimilarity());
+            indexWriterConfig.setSimilarity(similarity);
             ConcurrentMergeScheduler cms = new ConcurrentMergeScheduler();
             cms.setMaxMergesAndThreads(4, 2);
             indexWriterConfig.setMergeScheduler(cms);
             indexWriterConfig.setUseCompoundFile(false);
-            indexWriter = new IndexWriter(dir, indexWriterConfig);
+            IndexWriter indexWriter = new IndexWriter(dir, indexWriterConfig);
 
             String[] loaders = {"FBISLoader", "FR94Loader", "FTLoader", "LATimesLoader"};
 
@@ -57,7 +65,7 @@ public class IndexerCore {
             CountDownLatch latch = new CountDownLatch(tasks);
 
             for (int i = 0; i < tasks; i++) {
-                exe.submit(new IndexTask(loaders[i], latch));
+                exe.submit(new IndexTask(loaders[i], latch, indexWriter));
             }
             try {
                 latch.await();
@@ -75,37 +83,16 @@ public class IndexerCore {
         }
     }
 
-    public static MultiSimilarity getSimilarity() {
-
-        Similarity[] similarities = {
-//                new ClassicSimilarity(),
-                  new BM25Similarity(),
-//                 , new AxiomaticF1LOG()
-//                 ,
-//                new BooleanSimilarity(),
-                // , new LMJelinekMercerSimilarity(0.2f)
-//                  new LMDirichletSimilarity()
-        };
-        return new MultiSimilarity(similarities);
-    }
-
-    public static Analyzer getAnalyzer() {
-//        EnglishAnalyzer analyzer = new EnglishAnalyzer();
-//		StandardAnalyzer analyzer = new StandardAnalyzer();
-//        StandardAnalyzer analyzer = new StandardAnalyzer(EnglishAnalyzer.getDefaultStopSet());
-//        NewsAnalyzer analyzer = new NewsAnalyzer();
-//        CustomAnalyzerSk analyzer = new CustomAnalyzerSk();
-        CustomAnalyzer analyzer = new CustomAnalyzer();
-        return analyzer;
-    }
 
     static class IndexTask implements Runnable {
         private CountDownLatch latch;
         private String docLoaderClassName;
+        private IndexWriter indexWriter;
 
-        public IndexTask(String loader, CountDownLatch latch) {
+        public IndexTask(String loader, CountDownLatch latch, IndexWriter indexWriter) {
             this.docLoaderClassName = loader;
             this.latch = latch;
+            this.indexWriter = indexWriter;
         }
 
         public void run() {
@@ -113,7 +100,7 @@ public class IndexerCore {
                 DocLoader loaderInstance = (DocLoader) Class.forName("ie.tcd.newssearch.docloader." + docLoaderClassName).getConstructor().newInstance();
                 List<Document> documentList = loaderInstance.load((new File(documentsLocation)).getCanonicalPath());
                 // documents.addAll(documentList);
-                indexWriter.addDocuments(documentList);
+                this.indexWriter.addDocuments(documentList);
                 LOGGER.info(docLoaderClassName + "Indexing Done");
             } catch (IOException ioe) {
                 LOGGER.error("Error while parsing or indexing " + docLoaderClassName + " document", ioe);

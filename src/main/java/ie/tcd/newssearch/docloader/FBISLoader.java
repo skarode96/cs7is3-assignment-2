@@ -1,5 +1,3 @@
-//Reference:- https://github.com/kerinb/IR_proj2_group14/tree/master/src/com/kerinb/IR_proj2_group14
-
 package ie.tcd.newssearch.docloader;
 
 import ie.tcd.newssearch.docparser.objects.FBISObject;
@@ -24,10 +22,10 @@ import java.util.List;
 public class FBISLoader implements DocLoader {
 
 	private static BufferedReader br;
-	private static ArrayList<Document> fbisDocList = new ArrayList<>();
+	private static ArrayList<Document> fbisDocList;
 
 	public ArrayList<Document> loadFBISDocs(String fbisDirectory) throws IOException {
-
+		fbisDocList = new ArrayList<>();
 		System.out.println("Loading FBIS ...");
 
 		Directory dir = FSDirectory.open(Paths.get(fbisDirectory));
@@ -128,6 +126,7 @@ public class FBISLoader implements DocLoader {
 			br.close();
 		}
 	}
+
 
 	@Override
 	public List<Document> load(String absPathToFiles) throws IOException {

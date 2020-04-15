@@ -1,5 +1,3 @@
-//Reference:- https://github.com/kerinb/IR_proj2_group14/tree/master/src/com/kerinb/IR_proj2_group14
-
 package ie.tcd.newssearch.docloader;
 
 import ie.tcd.newssearch.docparser.objects.FTObject;
@@ -24,10 +22,11 @@ import java.util.List;
 public class FTLoader implements DocLoader {
 
 	private static BufferedReader br;
-	private static ArrayList<Document> ftDocList = new ArrayList<>();
+	private static ArrayList<Document> ftDocList;
 
 	public ArrayList<Document> loadFTDocs(String ftDirectory) throws IOException {
 		System.out.println("Loading FT ...");
+		ftDocList = new ArrayList<>();
 		Directory dir = FSDirectory.open(Paths.get(ftDirectory));
 		for (String directory : dir.listAll()) {
 			Directory insideDir = FSDirectory.open(Paths.get(ftDirectory+"/"+directory));
@@ -49,7 +48,6 @@ public class FTLoader implements DocLoader {
 
 		for (Element doc : list) {
 
-			// get data from tags and start creating objects
 			FTObject ftObject = new FTObject();
 			if (doc.getElementsByTag(FTTags.DOCNO.getTag()) != null)
 				ftObject.setDocNo(trimData(doc, FTTags.DOCNO));

@@ -14,14 +14,10 @@ import java.util.regex.Pattern;
 
 public class TopicsParser {
 
-//    private final static String COLON      = ":";
-//    private final static String WHITESPACE = " ";
-//    private final static String LINEFEED   = "\\n";
-//    private final static String NEWLINE    = "\\n\\n";
-    private static List<TopicsModel> parsedTopicsList = new ArrayList<>();
+    private static List<TopicsModel> parsedTopicsList;
 
     public static List<TopicsModel> parse(String absPathToTopicsFile) throws IOException {
-
+        parsedTopicsList = new ArrayList<>();
         org.jsoup.nodes.Document jsoupDoc = Jsoup.parse(new File(absPathToTopicsFile), "UTF-8", "");
 
         jsoupDoc.outputSettings(new Document.OutputSettings().prettyPrint(false));

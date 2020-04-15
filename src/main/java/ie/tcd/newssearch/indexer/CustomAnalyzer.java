@@ -24,7 +24,7 @@ public class CustomAnalyzer extends StopwordAnalyzerBase {
 
 	private final Path currentRelativePath = Paths.get("").toAbsolutePath();
 
-    CustomAnalyzer(){
+    public CustomAnalyzer(){
 		super(StandardAnalyzer.ENGLISH_STOP_WORDS_SET);
 	}
 

@@ -1,12 +1,14 @@
 package ie.tcd.newssearch.searcher;
 
-import ie.tcd.newssearch.indexer.IndexerCore;
+import ie.tcd.newssearch.builder.AnalyzerBuilder;
+import ie.tcd.newssearch.builder.AnalyzerChoice;
+import ie.tcd.newssearch.builder.SimilarityBuilder;
+import ie.tcd.newssearch.builder.SimilarityChoice;
 import ie.tcd.newssearch.topicsparser.TopicsModel;
 import ie.tcd.newssearch.topicsparser.TopicsParser;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -30,17 +32,23 @@ public class Searcher {
     private static final String ITER_NUM = " 0 ";
 
     private final static Path currentRelativePath = Paths.get("").toAbsolutePath();
-    private final static String absPathToSearchResults = String.format("%s/output/query_results", currentRelativePath);
+    private final static String absPathToSearchResults = String.format("%s/output/", currentRelativePath);
 
-    public static void executeQueries(Directory directory) throws ParseException {
+    public static void executeQueries(Directory directory, AnalyzerChoice analyzerChoice, SimilarityChoice similarityChoice) throws ParseException {
         try {
             IndexReader indexReader = DirectoryReader.open(directory);
-            IndexSearcher indexSearcher = createIndexSearcher(indexReader, IndexerCore.getSimilarity());
+            Similarity similarity = SimilarityBuilder.build(similarityChoice);
+            Analyzer analyzer = AnalyzerBuilder.build(analyzerChoice);
+
+            IndexSearcher indexSearcher = createIndexSearcher(indexReader, similarity);
+
 
             Map<String, Float> boost = createBoostMap();
-            QueryParser queryParser = new MultiFieldQueryParser(new String[]{"headline", "text"}, IndexerCore.getAnalyzer(), boost);
+            QueryParser queryParser = new MultiFieldQueryParser(new String[]{"headline", "text"}, analyzer, boost);
 
-            PrintWriter writer = new PrintWriter(absPathToSearchResults, "UTF-8");
+            String outputPath = absPathToSearchResults + analyzerChoice + "-" + similarityChoice;
+            PrintWriter writer = new PrintWriter(outputPath, "UTF-8");
+            PrintWriter writer1 = new PrintWriter(absPathToSearchResults + "query_results.txt", "UTF-8");
 
             String pathToTopics = String.format("%s/dataset/topics/topics",currentRelativePath);
             List<TopicsModel> loadedQueries = TopicsParser.parse(pathToTopics);
@@ -77,13 +85,17 @@ public class Searcher {
                         ScoreDoc hit = hits[hitIndex];
                         writer.println(queryData.getTopicNum() + ITER_NUM + indexSearcher.doc(hit.doc).get("docno") +
                                 " " + hitIndex + " " + hit.score + ITER_NUM);
+                        writer1.println(queryData.getTopicNum() + ITER_NUM + indexSearcher.doc(hit.doc).get("docno") +
+                                " " + hitIndex + " " + hit.score + ITER_NUM);
                     }
                 }
             }
 
             closeIndexReader(indexReader);
             closePrintWriter(writer);
-            System.out.println("queries executed");
+            closePrintWriter(writer1);
+            System.out.println("queries executed for : " + analyzerChoice + "-" + similarityChoice);
+            System.out.println("queries saved to location : " + outputPath);
 
         } catch (IOException e) {
             System.out.println("ERROR: an error occurred when instantiating the printWriter!");
@@ -98,9 +110,9 @@ public class Searcher {
         return boost;
     }
 
-     private static IndexSearcher createIndexSearcher(IndexReader indexReader, Similarity similarityModel){
+     private static IndexSearcher createIndexSearcher(IndexReader indexReader, Similarity similarity){
         IndexSearcher indexSearcher = new IndexSearcher(indexReader);
-        indexSearcher.setSimilarity(similarityModel);
+        indexSearcher.setSimilarity(similarity);
         return indexSearcher;
     }
 
