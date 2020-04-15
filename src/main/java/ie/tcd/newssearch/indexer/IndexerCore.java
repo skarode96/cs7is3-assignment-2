@@ -35,7 +35,7 @@ public class IndexerCore {
 
     public static void CreateIndex(AnalyzerChoice analyzerChoice, SimilarityChoice similarityChoice) {
 
-        LOGGER.info("Indexing started");
+        LOGGER.info("Indexing started for==> " + analyzerChoice + "-" + similarityChoice);
         long start = System.currentTimeMillis();
         analyzer = AnalyzerBuilder.build(analyzerChoice);
         similarity = SimilarityBuilder.build(similarityChoice);

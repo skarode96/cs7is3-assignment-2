@@ -87,7 +87,7 @@ public class Searcher {
 
             closeIndexReader(indexReader);
             closePrintWriter(writer);
-            System.out.println("queries executed");
+            System.out.println("queries executed for : " + analyzerChoice + "-" + similarityChoice);
 
         } catch (IOException e) {
             System.out.println("ERROR: an error occurred when instantiating the printWriter!");
