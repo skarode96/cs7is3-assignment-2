@@ -5,7 +5,9 @@ public enum AnalyzerChoice {
     Simple("Simple"),
     Standard("Standard") ,
     English("English"),
-    Custom("Custom");
+    Custom("Custom"),
+    Stop("Stop"),
+    Whitespace("Whitespace");
 
     private String analyzerName;
     private AnalyzerChoice(String analyzerName) {
