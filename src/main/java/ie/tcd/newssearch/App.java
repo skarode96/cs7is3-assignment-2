@@ -44,10 +44,10 @@ public class App {
                 analyzerChoice = AnalyzerChoice.Simple;
                 break;
             case "5":
-                analyzerChoice = AnalyzerChoice.Simple;
+                analyzerChoice = AnalyzerChoice.Whitespace;
                 break;
             case "6":
-                analyzerChoice = AnalyzerChoice.Simple;
+                analyzerChoice = AnalyzerChoice.Stop;
                 break;
             default:
                 analyzerChoice = AnalyzerChoice.Standard;
