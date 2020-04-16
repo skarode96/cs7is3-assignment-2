@@ -51,20 +51,53 @@ You should be able to view the score on terminal.
 
 ### Results 
 
-* Combination of BM25 with Custom Analyzer performed Best, generating MAP of 0.3419
+##### Combination of BM25 with Custom Analyzer performed Best, generating MAP of 0.3419
 
-* Comparison of Analyzers with BM25 Similarity
 
-![Analyzers Comparison](https://github.com/skarode96/cs7is3-assignment-2/blob/master/report/Analyzers%20Comparison%20with%20BM25%20Similarity.png)
+##### Comparison of Analyzers with BM25 Similarity
 
-* Indexing is done using multithreading which is completed in 120 seconds on average
-![Indexing](https://github.com/skarode96/cs7is3-assignment-2/blob/master/report/Multithreaded-Indexing-Time.png)
 
-* Table
-First Header | Second Header
------------- | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
+![Analyzers Comparison]
+(https://github.com/skarode96/cs7is3-assignment-2/blob/master/report/Analyzers%20Comparison%20with%20BM25%20Similarity.png)
+
+##### Indexing is done using multithreading which is completed in 120 seconds on average
+![Indexing]
+(https://github.com/skarode96/cs7is3-assignment-2/blob/master/report/Multithreaded-Indexing-Time.png)
+
+##### Table of Trec Eval Results
+
+| Similarity   |      Analyzer      |  MAP Score |
+|----------    |:------------------:|-----------:|
+| BM25         |  Custom            |      0.3419|
+|              |  Standard          |      0.2672|
+|              |  English           |      0.3221|
+|              |  Simple            |      0.2657|
+|              |  Stop              |      0.2652|
+|              |  Whitespace        |      0.1986|
+| Multi        |  Custom            |      0.3416|
+|              |  Standard          |      0.2680|
+|              |  English           |      0.3208|
+|              |  Simple            |      0.2670|
+|              |  Stop              |      0.2652|
+|              |  Whitespace        |      0.1985|
+| Classic      |  Custom            |      0.2030|
+|              |  Standard          |      0.1824|
+|              |  English           |      0.1920|
+|              |  Simple            |      0.1789|
+|              |  Stop              |      0.1777|
+|              |  Whitespace        |      0.1457|
+| LMDirichlet  |  Custom            |      0.2975|
+|              |  Standard          |      0.2504|
+|              |  English           |      0.2915|
+|              |  Simple            |      0.2502|
+|              |  Stop              |      0.2514|
+|              |  Whitespace        |      0.2039|
+| Boolean      |  Custom            |      0.1344|
+|              |  Standard          |      0.0855|
+|              |  English           |      0.0842|
+|              |  Simple            |      0.0765|
+|              |  Stop              |      0.0840|
+|              |  Whitespace        |      0.0591|
 
 
 
@@ -72,4 +105,5 @@ Content in the first column | Content in the second column
 
 ##### References
 Document Parsing Implementation and Query Parsing: [ref](https://github.com/CS7IS3-A-Y-201718-IR2/text-search-engine-ir2)
+
 Getting Started with Lucene: [ref](https://www.manning.com/books/lucene-in-action) 
