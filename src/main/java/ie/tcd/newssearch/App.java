@@ -27,7 +27,7 @@ public class App {
         System.out.println("4 - Simple");
         System.out.println("5 - Whitespace");
         System.out.println("6 - Stop");
-        System.out.println("6 - News");
+        System.out.println("7 - News");
 
         String input = System.console().readLine();
 
