@@ -1,12 +1,25 @@
 package ie.tcd.newssearch.indexer;
 
 import org.apache.lucene.analysis.*;
+import org.apache.lucene.analysis.core.FlattenGraphFilter;
 import org.apache.lucene.analysis.en.EnglishPossessiveFilter;
 import org.apache.lucene.analysis.en.PorterStemFilter;
 import org.apache.lucene.analysis.miscellaneous.SetKeywordMarkerFilter;
+import org.apache.lucene.analysis.miscellaneous.TrimFilter;
+import org.apache.lucene.analysis.miscellaneous.WordDelimiterGraphFilter;
+import org.apache.lucene.analysis.snowball.SnowballFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
+import org.apache.lucene.analysis.synonym.SynonymGraphFilter;
+import org.apache.lucene.analysis.synonym.SynonymMap;
+import org.apache.lucene.util.CharsRef;
+import org.tartarus.snowball.ext.EnglishStemmer;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.Reader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,6 +33,8 @@ public class NewsAnalyzer extends StopwordAnalyzerBase {
      * useful for searching.
      */
     public static final CharArraySet STOP_WORDS_SET;
+    private final Path currentRelativePath = Paths.get("").toAbsolutePath();
+
 
     static {
         // This is an extended stop words set derived from NLTK source
@@ -94,10 +109,18 @@ public class NewsAnalyzer extends StopwordAnalyzerBase {
         final Tokenizer source = new StandardTokenizer();
         TokenStream result = new EnglishPossessiveFilter(source);
         result = new LowerCaseFilter(result);
-        result = new StopFilter(result, stopwords);
+        result = new TrimFilter(result);
+        result = new FlattenGraphFilter(new WordDelimiterGraphFilter(result, WordDelimiterGraphFilter.SPLIT_ON_NUMERICS |
+                WordDelimiterGraphFilter.GENERATE_WORD_PARTS | WordDelimiterGraphFilter.GENERATE_NUMBER_PARTS |
+                WordDelimiterGraphFilter.PRESERVE_ORIGINAL , null));
+        result = new FlattenGraphFilter(new SynonymGraphFilter(result, createSynonymMap(), true));
+
+//        result = new StopFilter(result, stopwords);
         if (!stemExclusionSet.isEmpty())
             result = new SetKeywordMarkerFilter(result, stemExclusionSet);
-        result = new PorterStemFilter(result);
+
+        result = new StopFilter(result, StopFilter.makeStopSet(createStopWordList(),true));
+        result = new SnowballFilter(result, new EnglishStemmer());
         return new TokenStreamComponents(source, result);
     }
 
@@ -105,4 +128,42 @@ public class NewsAnalyzer extends StopwordAnalyzerBase {
     protected TokenStream normalize(String fieldName, TokenStream in) {
         return new LowerCaseFilter(in);
     }
+
+    private List<String> createStopWordList()
+    {
+        ArrayList<String> stopWordList = new ArrayList<>();
+        try {
+            BufferedReader stopwords = new BufferedReader(new FileReader(currentRelativePath + "/dataset/stopwords.txt"));
+            String word = stopwords.readLine();
+            while(word != null) {
+                stopWordList.add(word);
+                word = stopwords.readLine();
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getLocalizedMessage() + "occurred when trying to create stopword list");
+        }
+        return stopWordList;
+    }
+
+    private SynonymMap createSynonymMap() {
+        SynonymMap synMap = new SynonymMap(null, null, 0);
+        try {
+            BufferedReader countries = new BufferedReader(new FileReader(currentRelativePath + "/dataset/countries.txt"));
+
+            final SynonymMap.Builder builder = new SynonymMap.Builder(true);
+            String country = countries.readLine();
+
+            while(country != null) {
+                builder.add(new CharsRef("country"), new CharsRef(country), true);
+                builder.add(new CharsRef("countries"), new CharsRef(country), true);
+                country = countries.readLine();
+            }
+
+            synMap = builder.build();
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getLocalizedMessage() + "occurred when trying to create synonym map");
+        }
+        return synMap;
+    }
 }
+
