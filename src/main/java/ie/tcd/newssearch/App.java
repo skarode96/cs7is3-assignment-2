@@ -49,6 +49,8 @@ public class App {
             case "6":
                 analyzerChoice = AnalyzerChoice.Stop;
                 break;
+            case "7":
+                analyzerChoice = AnalyzerChoice.News;
             default:
                 analyzerChoice = AnalyzerChoice.Standard;
                 break;

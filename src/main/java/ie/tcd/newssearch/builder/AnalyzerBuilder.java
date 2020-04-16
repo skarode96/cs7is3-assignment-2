@@ -1,6 +1,7 @@
 package ie.tcd.newssearch.builder;
 
 import ie.tcd.newssearch.indexer.CustomAnalyzer;
+import ie.tcd.newssearch.indexer.NewsAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.core.StopAnalyzer;
@@ -28,6 +29,9 @@ public class AnalyzerBuilder {
 
             case Standard:
                 return new StandardAnalyzer();
+
+            case News:
+                return new NewsAnalyzer();
 
             default:
                 return new StandardAnalyzer();

@@ -7,7 +7,8 @@ public enum AnalyzerChoice {
     English("English"),
     Custom("Custom"),
     Stop("Stop"),
-    Whitespace("Whitespace");
+    Whitespace("Whitespace"),
+    News("News");
 
     private String analyzerName;
     private AnalyzerChoice(String analyzerName) {
