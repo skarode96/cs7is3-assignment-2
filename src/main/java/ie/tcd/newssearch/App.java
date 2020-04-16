@@ -27,6 +27,7 @@ public class App {
         System.out.println("4 - Simple");
         System.out.println("5 - Whitespace");
         System.out.println("6 - Stop");
+        System.out.println("6 - News");
 
         String input = System.console().readLine();
 
@@ -51,8 +52,9 @@ public class App {
                 break;
             case "7":
                 analyzerChoice = AnalyzerChoice.News;
+                break;
             default:
-                analyzerChoice = AnalyzerChoice.Standard;
+                analyzerChoice = AgnalyzerChoice.Standard;
                 break;
         }
 
