@@ -102,6 +102,6 @@ You should be able to view the score on terminal.
 
 
 ##### References
-Document Parsing Implementation and Query Parsing: [ref](https://github.com/CS7IS3-A-Y-201718-IR2/text-search-engine-ir2)
+Document Parsing Implementation and Query Parsing: [link](https://github.com/CS7IS3-A-Y-201718-IR2/text-search-engine-ir2)
 
-Getting Started with Lucene: [ref](https://www.manning.com/books/lucene-in-action) 
+Getting Started with Lucene: [link](https://www.manning.com/books/lucene-in-action) 
