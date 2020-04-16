@@ -57,12 +57,10 @@ You should be able to view the score on terminal.
 ##### Comparison of Analyzers with BM25 Similarity
 
 
-![Analyzers Comparison]
-(https://github.com/skarode96/cs7is3-assignment-2/blob/master/report/Analyzers%20Comparison%20with%20BM25%20Similarity.png)
+![Analyzers Comparison](https://github.com/skarode96/cs7is3-assignment-2/blob/master/report/Analyzers%20Comparison%20with%20BM25%20Similarity.png)
 
 ##### Indexing is done using multithreading which is completed in 120 seconds on average
-![Indexing]
-(https://github.com/skarode96/cs7is3-assignment-2/blob/master/report/Multithreaded-Indexing-Time.png)
+![Indexing](https://github.com/skarode96/cs7is3-assignment-2/blob/master/report/Multithreaded-Indexing-Time.png)
 
 ##### Table of Trec Eval Results
 
