@@ -35,23 +35,20 @@ GCC 5.4.0
 
 run following scripts from project root
 
-* Run the following command
+* Run the following command, this will compile, index files and generate trec_eval results and same will be displayed on the terminal
 ```
-sh compile.sh
+sh run.sh
 ```
-* Run the following command
-```
-sh indexer.sh
-```
-* Run the following command to get score output will be generated in output directory
+
+* Running following command will generate trec_results for the latest run
 ```
 sh run_trec_eval.sh
+```
 
-``` 
 
 You should be able to view the score on terminal
 
 ####References
-Document Parsing Implementation: https://github.com/CS7IS3-A-Y-201718-IR2/text-search-engine-ir2
+Document Parsing Implementation and Query Parsing: https://github.com/CS7IS3-A-Y-201718-IR2/text-search-engine-ir2
 
 
