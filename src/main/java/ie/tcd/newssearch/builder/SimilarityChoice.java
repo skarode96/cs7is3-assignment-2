@@ -5,7 +5,6 @@ public enum SimilarityChoice {
     BM25("BM25"),
     Boolean("Boolean"),
     Multi("Multi"),
-    TFIDF("TFIDF"),
     Classic("Classic"),
     LMDirichlet("LMDirichlet");
 

@@ -25,6 +25,8 @@ public class App {
         System.out.println("2 - Standard");
         System.out.println("3 - English");
         System.out.println("4 - Simple");
+        System.out.println("5 - Whitespace");
+        System.out.println("6 - Stop");
 
         String input = System.console().readLine();
 
@@ -41,6 +43,12 @@ public class App {
             case "4":
                 analyzerChoice = AnalyzerChoice.Simple;
                 break;
+            case "5":
+                analyzerChoice = AnalyzerChoice.Simple;
+                break;
+            case "6":
+                analyzerChoice = AnalyzerChoice.Simple;
+                break;
             default:
                 analyzerChoice = AnalyzerChoice.Standard;
                 break;
@@ -51,6 +59,7 @@ public class App {
         System.out.println("2 - MultiSimilarity");
         System.out.println("3 - LMDirichlet");
         System.out.println("4 - Boolean");
+        System.out.println("5 - Classic");
 
         input = System.console().readLine();
 
@@ -66,6 +75,9 @@ public class App {
                 break;
             case "4":
                 similarityChoice = SimilarityChoice.Boolean;
+                break;
+            case "5":
+                similarityChoice = SimilarityChoice.Classic;
                 break;
             default:
                 similarityChoice = SimilarityChoice.Classic;

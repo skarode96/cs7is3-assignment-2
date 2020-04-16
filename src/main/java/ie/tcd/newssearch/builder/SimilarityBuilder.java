@@ -14,6 +14,7 @@ public class SimilarityBuilder {
             case Multi:
                 return new MultiSimilarity(new MultiSimilarity[]{getSimilarity()});
             case LMDirichlet: return new LMDirichletSimilarity();
+            case Classic: return new ClassicSimilarity();
             default: return new ClassicSimilarity();
         }
     }
