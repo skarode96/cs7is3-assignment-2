@@ -54,7 +54,7 @@ public class App {
                 analyzerChoice = AnalyzerChoice.News;
                 break;
             default:
-                analyzerChoice = AgnalyzerChoice.Standard;
+                analyzerChoice = AnalyzerChoice.Standard;
                 break;
         }
 
