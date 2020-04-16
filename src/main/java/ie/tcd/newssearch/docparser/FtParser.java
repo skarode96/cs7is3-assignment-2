@@ -1,6 +1,6 @@
 package ie.tcd.newssearch.docparser;
 
-import ie.tcd.newssearch.constants.Constants;
+import ie.tcd.newssearch.consts.Constants;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

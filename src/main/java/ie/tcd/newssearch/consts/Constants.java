@@ -1,4 +1,4 @@
-package ie.tcd.newssearch.constants;
+package ie.tcd.newssearch.consts;
 
 public class Constants {
 
