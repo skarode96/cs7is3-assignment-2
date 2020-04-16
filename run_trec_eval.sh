@@ -2,10 +2,10 @@
 
 # BM25 with all Analyzers
 
-#"$(pwd)"/trec_eval.9.0/trec_eval -m all_trec "$(pwd)"/dataset/qrels.assignment2.part1 "$(pwd)"/output/query_results.txt
+"$(pwd)"/trec_eval.9.0/trec_eval -m all_trec "$(pwd)"/dataset/qrels.assignment2.part1 "$(pwd)"/output/query_results.txt
 
 #Best Custom + BM25 => map 0.3419
-"$(pwd)"/trec_eval.9.0/trec_eval -m all_trec "$(pwd)"/dataset/qrels.assignment2.part1 "$(pwd)"/output/Custom-BM25 > output/TrecResults-Custom-BM25.txt
+#"$(pwd)"/trec_eval.9.0/trec_eval -m all_trec "$(pwd)"/dataset/qrels.assignment2.part1 "$(pwd)"/output/Custom-BM25 > output/TrecResults-Custom-BM25.txt
 
 #"$(pwd)"/trec_eval.9.0/trec_eval -m all_trec "$(pwd)"/dataset/qrels.assignment2.part1 "$(pwd)"/output/Simple-BM25 > output/TrecResults-Simple-BM25.txt
 #"$(pwd)"/trec_eval.9.0/trec_eval -m all_trec "$(pwd)"/dataset/qrels.assignment2.part1 "$(pwd)"/output/English-BM25 > output/TrecResults-English-BM25.txt
